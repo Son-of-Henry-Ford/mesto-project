@@ -1,17 +1,21 @@
 const cardTemplate = document.querySelector('#card-template').content;
+const cardElement = cardTemplate.querySelector('.places__item');
 const cardsList = document.querySelector('.places__list');
 
+function createCard(name, link){
+    // клонируем содержимое тега template
+    const card = cardElement.cloneNode(true);
+    //Наполнение контейнера
+    const cardImage = card.querySelector('.card__image');
+    cardImage.src = link;
+    cardImage.alt = name;
+    card.querySelector('.card__title').textContent = name;
+    return card;
+}
 // наполняем содержимым
 initialCards.forEach(card => {
-    // клонируем содержимое тега template
-    const cardElement = cardTemplate.querySelector('.places__item').cloneNode(true);
-    //Наполнение контейнера
-    const cardImage = cardElement.querySelector('.card__image');
-    cardImage.src = card.link;
-    cardImage.alt = card.name;
-    cardElement.querySelector('.card__title').textContent = card.name;
     // отображаем на странице
-    cardsList.append(cardElement);
+    cardsList.append(createCard(card.name, card.link));
 })
 
 

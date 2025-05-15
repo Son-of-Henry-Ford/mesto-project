@@ -7,17 +7,18 @@ const cardsList = document.querySelector('.places__list');
 const profilePopup = document.querySelector('.popup_type_edit');
 const cardPopup = document.querySelector('.popup_type_new-card');
 const imagePopup = document.querySelector('.popup_type_image');
+const profile = document.querySelector('.profile');
 
-const buttonOpenProfile = document.querySelector('.profile__edit-button');
+const buttonOpenProfile = profile.querySelector('.profile__edit-button');
 const buttonCloseProfile = profilePopup.querySelector('.popup__close');
 
 const profileFormElement = profilePopup.querySelector('.popup__form');
 const nameInput = profilePopup.querySelector('.popup__input_type_name');
 const jobInput = profilePopup.querySelector('.popup__input_type_description');
-const nameUser = document.querySelector('.profile__title');
-const job = document.querySelector('.profile__description');
+const nameUser = profile.querySelector('.profile__title');
+const job = profile.querySelector('.profile__description');
 
-const buttonAddCard = document.querySelector('.profile__add-button');
+const buttonAddCard = profile.querySelector('.profile__add-button');
 const buttonCloseCard = cardPopup.querySelector('.popup__close');
 const cardNameInput = cardPopup.querySelector('.popup__input_type_card-name');
 const cardUrlInput = cardPopup.querySelector('.popup__input_type_url');
@@ -80,7 +81,7 @@ function closeModal(popup) {
 
 
 function handleProfileFormSubmit(evt) {
-    evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
+    evt.preventDefault();
     nameUser.textContent = nameInput.value;
     job.textContent = jobInput.value;
     closeModal(profilePopup);

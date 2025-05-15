@@ -2,7 +2,12 @@ const cardTemplate = document.querySelector('#card-template').content;
 const cardElement = cardTemplate.querySelector('.places__item');
 const cardsList = document.querySelector('.places__list');
 
-function createCard(name, link){
+const profilePopup = document.querySelector('.popup_type_edit');
+const cardPopup = document.querySelector('.popup_type_new-card');
+const imagePopup = document.querySelector('.popup_type_image');
+
+
+function createCard(name, link) {
     // клонируем содержимое тега template
     const card = cardElement.cloneNode(true);
     //Наполнение контейнера
@@ -12,17 +17,21 @@ function createCard(name, link){
     card.querySelector('.card__title').textContent = name;
     return card;
 }
-// наполняем содержимым
+
+
+function openModal(popup) {
+    popup.classList.add('popup_is-opened');
+}
+
+
+function closeModal(popup) {
+    popup.classList.remove('popup_is-opened');
+}
+
+
+// наполняем контейнер карточками.
 initialCards.forEach(card => {
     // отображаем на странице
     cardsList.append(createCard(card.name, card.link));
 })
 
-
-// @todo: DOM узлы
-
-// @todo: Функция создания карточки
-
-// @todo: Функция удаления карточки
-
-// @todo: Вывести карточки на страницу

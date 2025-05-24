@@ -28,14 +28,16 @@ function setDeleteListener(card) {
 
 //Функция добавления слушателей открытия и закрытия картинки
 function setImagePopupListener(cardImage, name, link) {
-    cardImage.addEventListener('click', () => {
+    cardImage.addEventListener('click', (e) => {
+        e.stopPropagation();
         imageFormTitle.textContent = name;
         imageFormImage.src = link;
         openModal(imagePopup);
     });
     //добавление слушателя для закрытия картинки.
     const closeButton = imagePopup.querySelector('.popup__close');
-    closeButton.addEventListener('click', () => {
+    closeButton.addEventListener('click', (e) => {
+        e.stopPropagation();
         closeModal(imagePopup);
     });
 }

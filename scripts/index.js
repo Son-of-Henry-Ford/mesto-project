@@ -2,6 +2,7 @@ import {initialCards} from "./cards.js"
 import {openModal, closeModal} from "../src/components/modal.js";
 import {createCard} from "../src/components/card.js"
 import {checkInputValidity} from "../src/components/validate.js"
+
 // Получаем все всплывающие окна
 const popups = document.querySelectorAll('.popup');
 //Получаем ненумерованный список для карточек
@@ -58,24 +59,28 @@ function handleCardFormSubmit(evt) {
 
 
 // Открытие формы редактирования профиля
-buttonOpenProfile.addEventListener('click', () => {
+buttonOpenProfile.addEventListener('click', (e) => {
+    e.stopPropagation();
     openModal(profilePopup);
 })
 
 // Закрытие формы редактирования профиля
-buttonCloseProfile.addEventListener('click', () => {
+buttonCloseProfile.addEventListener('click', (e) => {
+    e.stopPropagation();
     closeModal(profilePopup);
 })
 
 // Открытие формы добавления карточки
-buttonAddCard.addEventListener('click', () => {
+buttonAddCard.addEventListener('click', (e) => {
     cardNameInput.value = '';
     cardUrlInput.value = '';
+    e.stopPropagation();
     openModal(cardPopup);
 });
 
 // Закрытие формы добавления карточки
-buttonCloseCard.addEventListener('click', () => {
+buttonCloseCard.addEventListener('click', (e) => {
+    e.stopPropagation();
     closeModal(cardPopup);
 })
 
@@ -86,11 +91,6 @@ profileFormElement.addEventListener('submit', handleProfileFormSubmit);
 cardFormElement.addEventListener('submit', handleCardFormSubmit);
 
 
-displayCards();
-// Добавление анимаций для всех карточек
-popups.forEach(popup => {
-    popup.classList.add('popup_is-animated');
-})
 
 
 const setEventListeners = (formElement) => {
@@ -99,6 +99,7 @@ const setEventListeners = (formElement) => {
     toggleButtonState(inputList, buttonElement);
 
     inputList.forEach((inputElement) => {
+        checkInputValidity(formElement, inputElement);
         inputElement.addEventListener('input', function () {
             checkInputValidity(formElement, inputElement);
             toggleButtonState(inputList, buttonElement);
@@ -133,5 +134,11 @@ function toggleButtonState(input, buttonElement) {
     }
 }
 
+
+displayCards();
+// Добавление анимаций для всех карточек
+popups.forEach(popup => {
+    popup.classList.add('popup_is-animated');
+})
 enableValidation();
 

@@ -7,6 +7,7 @@ const cardElement = cardTemplate.querySelector('.places__item');
 const imageFormTitle = imagePopup.querySelector('.popup__caption');
 const imageFormImage = imagePopup.querySelector('.popup__image');
 
+
 // Функция добавления слушателя на кнопку "лайк" карточки.
 function setLikeListener(card) {
     const likeButton = card.querySelector('.card__like-button');

@@ -1,10 +1,6 @@
-const page = document.querySelector('.page');
-
-
 function closeByOverlay(e) {
-    if(!e.target.closest('.popup__content')){
-        const openPopup = document.querySelector('.popup.popup_is-opened');
-        closeModal(openPopup);
+    if (e.target === e.currentTarget) {
+        closeModal(e.currentTarget);
     }
 }
 
@@ -19,7 +15,7 @@ function closeByEsc(e){
 
 // Открытие модального окна
 export function openModal(popup) {
-    page.addEventListener('click', closeByOverlay);
+    popup.addEventListener('click', closeByOverlay);
     document.addEventListener('keydown', closeByEsc);
     popup.classList.add('popup_is-opened');
 }
@@ -29,5 +25,5 @@ export function openModal(popup) {
 export function closeModal(popup) {
     popup.classList.remove('popup_is-opened');
     document.removeEventListener('keydown', closeByEsc);
-    page.removeEventListener('click', closeByOverlay);
+    popup.removeEventListener('click', closeByOverlay);
 }

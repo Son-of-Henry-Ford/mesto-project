@@ -30,7 +30,6 @@ const cardUrlInput = cardPopup.querySelector('.popup__input_type_url');
 const cardFormElement = cardPopup.querySelector('.popup__form');
 
 
-
 // Функция отображения начальных карточек
 function displayCards() {
 // наполняем контейнер карточками.
@@ -109,4 +108,3 @@ const validationSettings = {
 }
 
 enableValidation(validationSettings);
-

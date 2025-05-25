@@ -1,7 +1,8 @@
-import {initialCards} from "./cards.js"
-import {openModal, closeModal} from "../src/components/modal.js";
-import {createCard} from "../src/components/card.js"
-import {checkInputValidity} from "../src/components/validate.js"
+import {initialCards} from "./cards.js";
+import {openModal, closeModal} from "./modal.js";
+import {createCard} from "./card.js";
+import {checkInputValidity} from "./validate.js";
+import '../pages/index.css';
 
 // Получаем все всплывающие окна
 const popups = document.querySelectorAll('.popup');
@@ -93,27 +94,27 @@ cardFormElement.addEventListener('submit', handleCardFormSubmit);
 
 
 
-const setEventListeners = (formElement) => {
-    const inputList = Array.from(formElement.querySelectorAll('.popup__input'));
-    const buttonElement = formElement.querySelector(".popup__button");
-    toggleButtonState(inputList, buttonElement);
+const setEventListeners = (formElement, validationSettings) => {
+    const inputList = Array.from(formElement.querySelectorAll(validationSettings.inputSelector));
+    const buttonElement = formElement.querySelector(validationSettings.submitButtonSelector);
+    toggleButtonState(inputList, buttonElement, validationSettings.inactiveButtonClass);
 
     inputList.forEach((inputElement) => {
-        checkInputValidity(formElement, inputElement);
+        checkInputValidity(formElement, inputElement, validationSettings);
         inputElement.addEventListener('input', function () {
-            checkInputValidity(formElement, inputElement);
-            toggleButtonState(inputList, buttonElement);
+            checkInputValidity(formElement, inputElement, validationSettings);
+            toggleButtonState(inputList, buttonElement, validationSettings.inactiveButtonClass);
         });
     });
 };
 
-const enableValidation = () => {
-    const formList = Array.from(document.querySelectorAll('.popup__form'));
+const enableValidation = (validationSettings) => {
+    const formList = Array.from(document.querySelectorAll(validationSettings.formSelector));
     formList.forEach((formElement) => {
         formElement.addEventListener('submit', function (evt) {
             evt.preventDefault();
         });
-        setEventListeners(formElement);
+        setEventListeners(formElement, validationSettings);
     });
 };
 
@@ -123,12 +124,12 @@ function hasInvalidInput(inputList) {
     });
 }
 
-function toggleButtonState(input, buttonElement) {
+function toggleButtonState(input, buttonElement, inactiveButtonClass) {
     if (hasInvalidInput(input)) {
-        buttonElement.classList.add("button_inactive");
+        buttonElement.classList.add(inactiveButtonClass);
         buttonElement.setAttribute('disabled', true);
     } else {
-        buttonElement.classList.remove("button_inactive");
+        buttonElement.classList.remove(inactiveButtonClass);
         buttonElement.removeAttribute('disabled');
 
     }
@@ -140,5 +141,15 @@ displayCards();
 popups.forEach(popup => {
     popup.classList.add('popup_is-animated');
 })
-enableValidation();
+
+const validationSettings = {
+    formSelector: '.popup__form',
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__button',
+    inactiveButtonClass: 'popup__button_disabled',
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: 'popup__error_visible'
+}
+
+enableValidation(validationSettings);
 

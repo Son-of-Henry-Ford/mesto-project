@@ -2,3 +2,7 @@
   flex-shrink: 0;
   flex-grow: 1;
 }
+
+.profile__image{
+  background-image: url('../../images/avatar.jpg');
+}

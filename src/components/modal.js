@@ -28,6 +28,6 @@ export function openModal(popup) {
 // Закрытие модального окна
 export function closeModal(popup) {
     popup.classList.remove('popup_is-opened');
+    document.removeEventListener('keydown', closeByEsc);
     page.removeEventListener('click', closeByOverlay);
-    document.removeEventListener('keypress', closeByEsc);
 }

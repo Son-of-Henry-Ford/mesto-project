@@ -19,7 +19,7 @@
   cursor: pointer;
 }
 
-.button_inactive {
+.popup__button_disabled {
   opacity: 0.2;
   border-radius: 2px;
   border: 1px solid #000000;

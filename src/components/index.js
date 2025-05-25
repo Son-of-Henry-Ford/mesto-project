@@ -1,7 +1,7 @@
 import {initialCards} from "./cards.js";
 import {openModal, closeModal} from "./modal.js";
 import {createCard} from "./card.js";
-import {checkInputValidity} from "./validate.js";
+import {enableValidation} from "./validate.js";
 import '../pages/index.css';
 
 // Получаем все всплывающие окна
@@ -90,50 +90,6 @@ profileFormElement.addEventListener('submit', handleProfileFormSubmit);
 
 // Отправка формы профиля
 cardFormElement.addEventListener('submit', handleCardFormSubmit);
-
-
-
-
-const setEventListeners = (formElement, validationSettings) => {
-    const inputList = Array.from(formElement.querySelectorAll(validationSettings.inputSelector));
-    const buttonElement = formElement.querySelector(validationSettings.submitButtonSelector);
-    toggleButtonState(inputList, buttonElement, validationSettings.inactiveButtonClass);
-
-    inputList.forEach((inputElement) => {
-        checkInputValidity(formElement, inputElement, validationSettings);
-        inputElement.addEventListener('input', function () {
-            checkInputValidity(formElement, inputElement, validationSettings);
-            toggleButtonState(inputList, buttonElement, validationSettings.inactiveButtonClass);
-        });
-    });
-};
-
-const enableValidation = (validationSettings) => {
-    const formList = Array.from(document.querySelectorAll(validationSettings.formSelector));
-    formList.forEach((formElement) => {
-        formElement.addEventListener('submit', function (evt) {
-            evt.preventDefault();
-        });
-        setEventListeners(formElement, validationSettings);
-    });
-};
-
-function hasInvalidInput(inputList) {
-    return inputList.some((elem) => {
-        return !elem.validity.valid;
-    });
-}
-
-function toggleButtonState(input, buttonElement, inactiveButtonClass) {
-    if (hasInvalidInput(input)) {
-        buttonElement.classList.add(inactiveButtonClass);
-        buttonElement.setAttribute('disabled', true);
-    } else {
-        buttonElement.classList.remove(inactiveButtonClass);
-        buttonElement.removeAttribute('disabled');
-
-    }
-}
 
 
 displayCards();

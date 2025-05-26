@@ -2,6 +2,7 @@ import {openModal, closeModal} from "./modal.js";
 import {createCard} from "./card.js";
 import {enableValidation} from "./validate.js";
 import '../pages/index.css';
+import {getInitialCards, getUser, updateUserData, addNewCard} from "./api"
 
 // Получаем все всплывающие окна
 const popups = document.querySelectorAll('.popup');
@@ -39,86 +40,50 @@ const validationSettings = {
     errorClass: 'popup__error_visible'
 }
 
-const userConfig = {
-    groupId: 'apf-cohort-202',
-    accessToken: 'b7eca70d-a576-4b8a-81ae-597a37d75792'
-}
 
 // Обработчик отправки формы профиля
 function handleProfileFormSubmit(evt) {
     evt.preventDefault();
-    userName.textContent = nameInput.value;
-    userJob.textContent = jobInput.value;
-    closeModal(profilePopup);
+    const updatedUserData = {
+        name: nameInput.value,
+        about: jobInput.value
+    };
+    updateUserData(updatedUserData)
+        .then(({name, about}) => {
+            userName.textContent = name;
+            userJob.textContent = about;
+            closeModal(profilePopup);
+        })
+        .catch(function (error) {
+            console.error("Не удалось обновить информацию о пользователе:", error);
+        });
 }
 
 
 // Обработчик отправки формы новой карточки
 function handleCardFormSubmit(evt) {
     evt.preventDefault();
-    const newCard = createCard(cardNameInput.value, cardUrlInput.value);
-    cardsList.prepend(newCard);
-    closeModal(cardPopup);
-}
-
-function addPopupAnimations() {
-    popups.forEach(popup => popup.classList.add("popup_is-animated"));
-}
-
-
-// Общая функция запроса
-function fetchData(url, config) {
-    return fetch(url, {
-        headers: {
-            authorization: config.accessToken
-        }
-    }).then(function (res) {
-        if (!res.ok) {
-            throw new Error("Ошибка: " + res.status);
-        }
-        return res.json();
-    });
-}
-
-
-// Получение пользователя
-function getUser(config) {
-    return fetchData("https://nomoreparties.co/v1/" + config.groupId + "/users/me", config);
-}
-
-
-// Получение карточек
-function getCards(config) {
-    return fetchData("https://nomoreparties.co/v1/" + config.groupId + "/cards", config);
-}
-
-
-// Установка данных пользователя
-function setUserInfo(config) {
-    getUser(config)
-        .then(function (user) {
-            userName.textContent = user.name;
-            userJob.textContent = user.about;
-            userAvatar.src = user.avatar;
+    const newCardData = {
+        name: cardNameInput.value,
+        link: cardUrlInput.value
+    };
+    addNewCard(newCardData)
+        .then(card => {
+            const newCard = createCard(card, card.owner._id);
+            cardsList.prepend(newCard);
+            closeModal(cardPopup);
         })
         .catch(function (error) {
-            console.error("Не удалось установить пользователя:", error);
+            console.error("Не удалось добавить карточку:", error);
         });
 }
 
 
-// Работа с карточками
-function renderInitialCards(config) {
-    getCards(config)
-        .then(cards =>
-            cards.forEach(card => {
-                cardsList.append(createCard(card.name, card.link));
-            })
-        )
-        .catch(error =>
-            console.error("Ошибка при получении карточек:", error)
-        );
+//Добавление анимации для всплывающих окон
+function addPopupAnimations() {
+    popups.forEach(popup => popup.classList.add("popup_is-animated"));
 }
+
 
 // Открытие формы редактирования профиля
 buttonOpenProfile.addEventListener('click', (e) => {
@@ -149,13 +114,29 @@ buttonCloseCard.addEventListener('click', (e) => {
 // Отправка формы профиля
 profileFormElement.addEventListener('submit', handleProfileFormSubmit);
 
-// Отправка формы профиля
+// Отправка формы для карточки
 cardFormElement.addEventListener('submit', handleCardFormSubmit);
 
 
 function initApp() {
-    setUserInfo(userConfig);
-    renderInitialCards(userConfig);
+    Promise.all([getUser(), getInitialCards()])
+        .then(([user, cards]) => {
+            // Устанавливаем данные пользователя
+            userName.textContent = user.name;
+            userJob.textContent = user.about;
+            userAvatar.src = user.avatar;
+
+            // Сохраняем ID пользователя
+            const userId = user._id;
+
+            // Отрисовываем карточки
+            cards.forEach(card => {
+                cardsList.append(createCard(card, userId));
+            });
+        })
+        .catch(error => {
+            console.error("Ошибка при инициализации данных:", error);
+        });
 
     addPopupAnimations();
     enableValidation(validationSettings);

@@ -1,4 +1,5 @@
 .profile__image {
+  position: relative;
   width: 120px;
   height: 120px;
   -webkit-border-radius: 50%;
@@ -7,6 +8,23 @@
   background-size: cover;
   background-position: center;
   margin: 0 29px 0 0;
+  transition: opacity 0.3s ease;
+}
+
+.profile__image::before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.8);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.profile__image:hover::before {
+  opacity: 1;
 }
 
 @media screen and (max-width: 740px) {
@@ -20,3 +38,4 @@
     margin-right: 0;
   }
 }
+

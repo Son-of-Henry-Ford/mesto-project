@@ -5,7 +5,7 @@ const imagePopup = document.querySelector('.popup_type_image');
 const cardTemplate = document.querySelector('#card-template').content;
 const cardElement = cardTemplate.querySelector('.places__item');
 
-// Элементы попапа изображения
+// Элементы попапа изображения.
 const imageFormTitle = imagePopup.querySelector('.popup__caption');
 const imageFormImage = imagePopup.querySelector('.popup__image');
 
@@ -41,7 +41,7 @@ function handleCardDelete(cardId, deleteButton) {
 }
 
 
-//Функция добавления слушателей открытия и закрытия картинки
+//Функция добавления слушателей открытия и закрытия картинки.
 function setImagePopupListener(cardImage, card) {
     cardImage.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -58,36 +58,36 @@ function setImagePopupListener(cardImage, card) {
 }
 
 
-// Функция создания карточки
+// Функция создания карточки.
 export function createCard(newCard, myUserId) {
-    // клонируем содержимое тега template.
     const card = cardElement.cloneNode(true);
-    //Наполнение контейнера.
+
     const cardImage = card.querySelector('.card__image');
+    const likeButton = card.querySelector('.card__like-button');
+    const likeCounter = card.querySelector('.card__like-counter');
+    const deleteButton = card.querySelector('.card__delete-button');
+
+    //Установка данных.
     cardImage.src = newCard.link;
     cardImage.alt = newCard.name;
-    card.querySelector('.card__title').textContent = newCard.name;
-    //Определение значения счётчика лайков
-    const likeCounter = card.querySelector('.card__like-counter');
     likeCounter.textContent = newCard.likes.length;
-    const deleteButton = card.querySelector('.card__delete-button');
-    //добавление слушателя для кнопки "лайк".
-    const likeButton = card.querySelector('.card__like-button');
-    likeButton.addEventListener('click', handleLikeListener(newCard._id, likeButton, likeCounter));
-    //Включение выделения понравившихся картинок
+
+    //Лайк.
     if (newCard.likes.find(like => like._id === myUserId)) {
         likeButton.classList.add('card__like-button_is-active');
     }
-    //добавление слушателя на кнопку удаления для владельца.
+    likeButton.addEventListener('click', handleLikeListener(newCard._id, likeButton, likeCounter));
+
+    //Удаление.
     if (newCard.owner._id === myUserId) {
-        const deleteButton = card.querySelector('.card__delete-button');
         deleteButton.addEventListener('click',
             handleCardDelete(newCard._id, deleteButton)
         );
     } else {
         deleteButton.classList.add('card__delete-button_hidden');
     }
-    //добавление слушателя для открытия картинки.
+
+    //Открытие попапа.
     setImagePopupListener(cardImage, newCard);
     return card;
 }

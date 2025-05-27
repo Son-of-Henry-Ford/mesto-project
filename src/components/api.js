@@ -8,7 +8,7 @@ const config = {
 }
 
 
-//Обработка ответа
+//Обработка ответа.
 function handleResponse(res) {
     if (res.ok) {
         return res.json(); // Если ответ успешный, возвращаем JSON
@@ -17,7 +17,7 @@ function handleResponse(res) {
 }
 
 
-//Получение карточек
+//Получение карточек.
 export function getInitialCards() {
     return fetch(`${config.baseUrl}/cards`, {
         headers: config.headers
@@ -26,7 +26,7 @@ export function getInitialCards() {
 }
 
 
-// Получение пользователя
+// Получение пользователя.
 export function getUser() {
     return fetch(`${config.baseUrl}/users/me`, {
         headers: config.headers
@@ -35,7 +35,7 @@ export function getUser() {
 }
 
 
-//Внесение изменений в описание профиля
+//Внесение изменений в описание профиля.
 export function updateUserData(newUserData) {
     return fetch(`${config.baseUrl}/users/me`, {
         method: 'PATCH',
@@ -49,7 +49,7 @@ export function updateUserData(newUserData) {
 }
 
 
-//Добавление новой карточки
+//Добавление новой карточки.
 export function addNewCard(newCard) {
     return fetch(`${config.baseUrl}/cards`, {
         method: 'POST',
@@ -63,7 +63,7 @@ export function addNewCard(newCard) {
 }
 
 
-//Запрос на удаление карточки
+//Запрос на удаление карточки.
 export function deleteCard(cardId) {
     return fetch(`${config.baseUrl}/cards/${cardId}`, {
         method: 'DELETE',
@@ -73,7 +73,7 @@ export function deleteCard(cardId) {
 }
 
 
-//Установка лайка на карточку
+//Установка лайка на карточку.
 export function addLike(cardId) {
     return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
         method: 'PUT',
@@ -83,7 +83,7 @@ export function addLike(cardId) {
 }
 
 
-//Удаление лайка с карточки
+//Удаление лайка с карточки.
 export function removeLike(cardId){
     return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
         method: 'DELETE',
@@ -93,11 +93,14 @@ export function removeLike(cardId){
 }
 
 
-//Смена аватара пользователя
-export function changeUserAvatar(avatar){
-    return fetch(`${config.baseUrl}/users/me/${avatar}`, {
+//Обновление аватара пользователя.
+export function changeUserAvatar(link){
+    return fetch(`${config.baseUrl}/users/me/avatar`, {
         method: 'PATCH',
-        headers: config.headers
+        headers: config.headers,
+        body: JSON.stringify({
+            avatar: link,
+        })
     })
         .then(handleResponse);
 }

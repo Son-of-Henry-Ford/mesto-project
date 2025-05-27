@@ -104,7 +104,6 @@ function handleAvatarFormSubmit(evt) {
     changeUserAvatar(avatarUrlInput.value)
         .then((user) => {
             setUser(user);
-            avatarUrlInput.value = "";
             closeModal(avatarPopup);
         })
         .catch(function (error) {
@@ -134,6 +133,7 @@ function toggleButtonLoadingAnimation(button, isLoading) {
 // Открытие формы редактирования профиля.
 buttonOpenProfile.addEventListener('click', (e) => {
     e.stopPropagation();
+    profileFormElement.reset();
     openModal(profilePopup);
 })
 
@@ -145,9 +145,8 @@ buttonCloseProfile.addEventListener('click', (e) => {
 
 // Открытие формы добавления карточки.
 buttonAddCard.addEventListener('click', (e) => {
-    cardNameInput.value = '';
-    cardUrlInput.value = '';
     e.stopPropagation();
+    cardFormElement.reset();
     openModal(cardPopup);
 });
 
@@ -160,6 +159,7 @@ buttonCloseCard.addEventListener('click', (e) => {
 //Открытие формы редактирования аватара.
 buttonOpenAvatar.addEventListener('click', (e) => {
     e.stopPropagation();
+    avatarFormElement.reset();
     openModal(avatarPopup);
 })
 

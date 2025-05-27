@@ -28,6 +28,7 @@ function handleLikeListener(cardId, likeButton, likeCounter) {
 }
 
 
+//Удаление карточки.
 function handleCardDelete(cardId, deleteButton) {
     return () => {
         deleteCard(cardId)

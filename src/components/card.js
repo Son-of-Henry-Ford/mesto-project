@@ -58,21 +58,22 @@ function setImagePopupListener(cardImage, card) {
 }
 
 
-// Функция создания карточки.
+// Функция создания карточки
 export function createCard(newCard, myUserId) {
     const card = cardElement.cloneNode(true);
 
     const cardImage = card.querySelector('.card__image');
-    const likeButton = card.querySelector('.card__like-button');
     const likeCounter = card.querySelector('.card__like-counter');
     const deleteButton = card.querySelector('.card__delete-button');
+    const likeButton = card.querySelector('.card__like-button');
 
-    //Установка данных.
+    //Наполнение контейнера.
     cardImage.src = newCard.link;
     cardImage.alt = newCard.name;
-    likeCounter.textContent = newCard.likes.length;
+    card.querySelector('.card__title').textContent = newCard.name;
 
     //Лайк.
+    likeCounter.textContent = newCard.likes.length;
     if (newCard.likes.find(like => like._id === myUserId)) {
         likeButton.classList.add('card__like-button_is-active');
     }
